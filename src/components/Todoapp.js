@@ -2,121 +2,136 @@ import React, { useState, useEffect } from "react";
 import "../App.css";
 
 function Todoapp() {
+
   const [tasks, setTasks] = useState([]);
-  const [newTask, setNewTask] = useState("");
-  const [editIndex, setEditIndex] = useState(null);
-  const [editText, setEditText] = useState("");
+  const [taskInput, setTaskInput] = useState("");
+  const [editId, setEditId] = useState(null);
+  const [editValue, setEditValue] = useState("");
+
+  useEffect(() => {
+    const savedTasks = JSON.parse(localStorage.getItem("tasks"));
+    if (savedTasks) {
+      setTasks(savedTasks);
+    }
+  }, []);
 
   useEffect(() => {
     localStorage.setItem("tasks", JSON.stringify(tasks));
   }, [tasks]);
 
   const addTask = () => {
-    if (newTask.trim() === "") {
-      alert("Please enter task");
+    if (taskInput.trim() === "") {
+      alert("Please enter a task");
       return;
     }
 
-    const task = {
-      text: newTask,
-      done: false,
+    const newTask = {
+      text: taskInput,
+      completed: false
     };
 
-    setTasks([...tasks, task]);
-    setNewTask("");
+    setTasks([...tasks, newTask]);
+    setTaskInput("");
   };
 
   const toggleTask = (index) => {
-    const updated = [...tasks];
-    updated[index].done = !updated[index].done;
-    setTasks(updated);
+    const updatedTasks = [...tasks];
+    updatedTasks[index].completed = !updatedTasks[index].completed;
+    setTasks(updatedTasks);
   };
 
   const deleteTask = (index) => {
-    if (window.confirm("Are you sure you want to delete this task?")) {
-      setTasks(tasks.filter((_, i) => i !== index));
+    if (window.confirm("Delete this task?")) {
+      const updatedTasks = tasks.filter((_, i) => i !== index);
+      setTasks(updatedTasks);
     }
   };
 
-  const editTask = (index) => {
-    setEditIndex(index);
-    setEditText(tasks[index].text);
+  const startEdit = (index) => {
+    setEditId(index);
+    setEditValue(tasks[index].text);
   };
 
   const saveTask = (index) => {
-    if (editText.trim() === "") return;
+    if (editValue.trim() === "") return;
 
-    const updated = [...tasks];
-    updated[index].text = editText;
-    setTasks(updated);
-    setEditIndex(null);
-    setEditText("");
+    const updatedTasks = [...tasks];
+    updatedTasks[index].text = editValue;
+
+    setTasks(updatedTasks);
+    setEditId(null);
+    setEditValue("");
   };
 
   return (
-      <div className="app-box">
-        <h2>To Do App</h2>
+    <div className="app-box">
 
-        <div className="input-box">
-          <input
-            type="text"
-            placeholder="Enter your task"
-            value={newTask}
-            onChange={(e) => setNewTask(e.target.value)}
-          />
-          <button onClick={addTask}>Add</button>
-        </div>
+      <h2>Todo List</h2>
 
-        <div className="task-list">
-          {tasks.map((task, index) => (
-            <div key={index} className="task-item">
-              <div className="task-left">
-                <input
-                  type="checkbox"
-                  checked={task.done}
-                  onChange={() => toggleTask(index)}
-                />
+      <div className="input-box">
+        <input
+          type="text"
+          placeholder="Enter task..."
+          value={taskInput}
+          onChange={(e) => setTaskInput(e.target.value)}
+        />
 
-                {editIndex === index ? (
-                  <input
-                    type="text"
-                    className="edit-input"
-                    value={editText}
-                    onChange={(e) => setEditText(e.target.value)}
-                  />
-                ) : (
-                  <span
-                    className={`task-text ${
-                      task.done ? "completed" : ""
-                    }`}
-                  >
-                    {task.text}
-                  </span>
-                )}
-              </div>
-
-              <div className="task-buttons">
-                {editIndex === index ? (
-                  <button onClick={() => saveTask(index)}>Save</button>
-                ) : (
-                  <>
-                    <button onClick={() => editTask(index)}>
-                      Edit
-                    </button>
-                    <button
-                      className="delete-btn"
-                      onClick={() => deleteTask(index)}
-                    >
-                      Delete
-                    </button>
-                  </>
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
+        <button onClick={addTask}>Add</button>
       </div>
-  
+
+      <div className="task-list">
+
+        {tasks.map((task, index) => (
+
+          <div className="task-item" key={index}>
+
+            <div className="task-left">
+
+              <input
+                type="checkbox"
+                checked={task.completed}
+                onChange={() => toggleTask(index)}
+              />
+
+              {editId === index ? (
+                <input
+                  className="edit-input"
+                  value={editValue}
+                  onChange={(e) => setEditValue(e.target.value)}
+                />
+              ) : (
+                <span className={task.completed ? "completed task-text" : "task-text"}>
+                  {task.text}
+                </span>
+              )}
+
+            </div>
+
+            <div className="task-buttons">
+
+              {editId === index ? (
+                <button onClick={() => saveTask(index)}>Save</button>
+              ) : (
+                <>
+                  <button onClick={() => startEdit(index)}>Edit</button>
+                  <button
+                    className="delete-btn"
+                    onClick={() => deleteTask(index)}
+                  >
+                    Delete
+                  </button>
+                </>
+              )}
+
+            </div>
+
+          </div>
+
+        ))}
+
+      </div>
+
+    </div>
   );
 }
 

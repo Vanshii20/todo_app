@@ -2,13 +2,13 @@ import React from "react";
 import "./App.css";
 import Todoapp from "./components/Todoapp";
 
-const App = () => {
+function App() {
   return (
-    <main className="main-container">
+    <div className="main-container">
       <h1 className="main-title">My Daily Tasks</h1>
       <Todoapp />
-    </main>
+    </div>
   );
-};
+}
 
 export default App;

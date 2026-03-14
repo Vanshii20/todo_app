@@ -1,7 +1,7 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: #eaa0a7;
+  background: #f7b6c2;
   font-family: Arial, sans-serif;
 }
 
@@ -9,50 +9,44 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;      
-  justify-content: flex-start; 
-  padding-top: 60px;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 50px;
 }
 
 .main-title {
-  margin-bottom: 20px;
   text-align: center;
 }
 
 .app-box {
-  width: 400px;
-  padding: 20px;
-  margin-top: 40px;
+  width: 90%;
+  max-width: 420px;
   background: white;
-  border-radius: 12px;
-  text-align: center;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-}
-
-.app-box h2 {
-  margin-top: 0;
-  margin-bottom: 20px;
+  padding: 20px;
+  margin-top: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 
 .input-box {
   display: flex;
-  justify-content: space-between;
+  gap: 10px;
   margin-bottom: 15px;
 }
 
-input[type="text"] {
-  padding: 6px;
-  width: 70%;
+.input-box input {
+  flex: 1;
+  padding: 8px;
   border-radius: 5px;
   border: 1px solid gray;
 }
 
 button {
-  padding: 6px 12px;
-  background-color: green;
-  color: white;
+  padding: 7px 12px;
   border: none;
   border-radius: 5px;
+  background: green;
+  color: white;
   cursor: pointer;
 }
 
@@ -60,18 +54,14 @@ button:hover {
   opacity: 0.85;
 }
 
-.delete-btn {
-  background-color: green;
-}
-
 .task-item {
-  background: #f3f3f3;
-  margin-top: 10px;
-  padding: 8px;
-  border-radius: 6px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background: #f1f1f1;
+  padding: 8px;
+  border-radius: 6px;
+  margin-top: 10px;
 }
 
 .task-left {
@@ -82,12 +72,7 @@ button:hover {
 }
 
 .task-text {
-  flex: 1;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
   word-break: break-word;
-  white-space: normal;
-  text-align: left;
 }
 
 .completed {
@@ -97,12 +82,27 @@ button:hover {
 
 .task-buttons {
   display: flex;
-  gap: 8px;
+  gap: 6px;
 }
 
 .edit-input {
   padding: 5px;
-  border-radius: 5px;
+  border-radius: 4px;
   border: 1px solid gray;
-  width: 150px;
+  width: 140px;
+}
+
+@media (max-width: 500px) {
+
+  .task-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .task-buttons {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
 }
